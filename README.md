@@ -100,3 +100,25 @@ class HelloBrick implements BrickInterface
 
 And *voilà!* We now have our great new Brick! Well, currently this Brick doesn't do anything. But we will add all the
 needed step by step. And the first thing will be : an Event.
+
+### Adding an Event
+
+In Marmot Bricks, Events can be dispatch by the EventManager and listened by Services (we will see Service later). In
+our project we want a custom Event that tell we want to say 'Hello!' :
+
+```php
+<?php
+
+namespace <Vendor>\HelloBrick\Events;
+
+use Marmot\Brick\Events\Event;
+
+#[Event]
+class SayHelloEvent
+{
+}
+```
+
+That's all! Actually not. Did you remember the directory structure earlier? Well, when we create a new Event, the
+corresponding class must be in the `src/Events` directory. That's way, our Brick will know the existence of our Event (
+it will be the same for Services and Commands).
