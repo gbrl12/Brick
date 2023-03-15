@@ -122,3 +122,31 @@ class SayHelloEvent
 That's all! Actually not. Did you remember the directory structure earlier? Well, when we create a new Event, the
 corresponding class must be in the `src/Events` directory. That's way, our Brick will know the existence of our Event (
 it will be the same for Services and Commands).
+
+### Adding a Service
+
+To listen to our new Event, we need a Service. Let's create it!
+
+```php
+<?php
+
+namespace <Vendor>\HelloBrick\Events;
+
+use Marmot\Brick\Events\EventListener;
+use Marmot\Brick\Services\Service;
+use <Vendor>\HelloBrick\Events\SayHelloEvent;
+
+#[Service]
+class HelloService
+{
+    #[EventListener]
+    public function sayHelloListener(SayHelloEvent $event)
+    {
+        echo 'Hello!';
+    }
+}
+```
+
+So, a Service is class with the Service attribute and located in `src/Services` directory. To listen to an Event, you
+must create a function with the EventListener attribute and the corresponding Event as unique parameter. When the event
+will be dispatched, this function will be called by the EventManager.
