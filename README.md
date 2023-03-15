@@ -11,16 +11,39 @@ new behavior to Marmot through events, services and commands.
 
 You want to add a new behavior to Marmot ? Let's build it !
 
-The very first thing to do is to require this package :
+In the following, we will create a Brick name HelloBrick with an Event, a Service and a Command.
+
+### Initialize the project
+
+The very first thing to do is to create a composer project :
+
+```shell
+# Create a directory and go into
+mkdir HelloBrick && cd HelloBrick
+# Init composer
+composer init
+```
+
+For your composer configuration, the package name will be `<vendor>/hello-brick`, and you can set autoload this way :
+
+```json
+{
+    "autoload": {
+        "psr-4": {
+            "<Vendor>\\HelloBrick": "src/"
+        }
+    }
+}
+```
+
+Then, require the Brick library :
 
 ```shell
 composer require marmot/brick
 ```
 
-You can begin to work !
-
-A brick consists on a collection of `Service`, `Event`, `Command` and others. It's recommended to follow this directory
-structure :
+A brick consists on a collection of `Service`, `Event`, `Command` and others files. It's recommended to follow this
+directory structure :
 
 ```
 your-brick/
@@ -29,9 +52,10 @@ your-brick/
 │   ├── services.yml
 │   └── brick.yml
 ├── src/
-│   ├── Commands
-│   ├── Events
-│   └── Services
+│   ├── Commands/
+│   ├── Events/
+│   ├── Services/
+│   └── Brick.php
 ├── tests/
 ├── public/
 ├── view/
@@ -45,18 +69,34 @@ A little explanation on each directory :
 - `public` contains public assets, like css, javascript, images, ...
 - `view` contains templates for rendering
 
-The two last directories are needed only if your brick will render some things. For that you will need `Marmot/MdGen`
-and `Marmot/Router` bricks.
-
-Now you can add all your dependencies in your `composer.json`. Naturally, a brick can be composed of bricks, so you can
-add some bricks in your dependencies.
-
-The next step is to configure your brick ! For that, edit `config/brick.yml`. This file contains all needed information
-required by the core to understand and use your brick. You can see this file like cement.
+Now open `config/brick.yml` and write that :
 
 ```yaml
 brick:
-  class: Name\\Space\\Of\\Your\\Brick
+  name: HelloBrick
+  description: A Brick that say Hello to World!
+  class: <Vendor>\\HelloBrick\\HelloBrick
 ```
 
-... more later
+Name and description are optional, but are useful for documentation. The only required field is class, its value must be
+the name of the class (with its namespace) implementing the interface `BrickInterface`.
+
+### Implement `BrickInterface`
+
+The key component of a Brick is the `BrickInterface`. To create a new Brick, you must declare a class implementing this
+interface. Let's do that :
+
+```php
+<?php
+
+namespace <Vendor>\HelloBrick;
+
+use Marmot\Brick\BrickInterface;
+
+class HelloBrick implements BrickInterface
+{
+}
+```
+
+And *voilà!* We now have our great new Brick! Well, currently this Brick doesn't do anything. But we will add all the
+needed step by step. And the first thing will be : an Event.
