@@ -48,9 +48,6 @@ directory structure :
 ```
 your-brick/
 ├── config/
-│   ├── ...
-│   ├── services.yml
-│   └── brick.yml
 ├── src/
 │   ├── Commands/
 │   ├── Events/
@@ -63,23 +60,11 @@ your-brick/
 
 A little explanation on each directory :
 
-- `config` contains all YAML config files and the most important one : `brick.yml` (more on that later)
+- `config` contains all YAML config files
 - `src` contains all your PHP source files
 - `tests` really need to explain ?
 - `public` contains public assets, like css, javascript, images, ...
 - `view` contains templates for rendering
-
-Now open `config/brick.yml` and write that :
-
-```yaml
-brick:
-  name: HelloBrick
-  description: A Brick that say Hello to World!
-  class: <Vendor>\\HelloBrick\\HelloBrick
-```
-
-Name and description are optional, but are useful for documentation. The only required field is class, its value must be
-the name of the class (with its namespace) implementing the interface `BrickInterface`.
 
 ### Implement `BrickInterface`
 
@@ -150,3 +135,29 @@ class HelloService
 So, a Service is class with the Service attribute and located in `src/Services` directory. To listen to an Event, you
 must create a function with the EventListener attribute and the corresponding Event as unique parameter. When the event
 will be dispatched, this function will be called by the EventManager.
+
+### Dispatch the Event
+
+Let's go back to our HelloBrick class. We want that when the Brick is initialized, it says Hello! to everyone. Let's go
+that!
+
+```php
+<?php
+
+namespace <Vendor>\HelloBrick;
+
+use Marmot\Brick\BrickInterface;
+use Marmot\Brick\Events\EventManager;
+use <Vendor>\HelloBrick\Events\SayHelloEvent;
+
+class HelloBrick implements BrickInterface
+{
+    public function initialize(EventManager $event_manager)
+    {
+        $event_manager->dispatch(new SayHelloEvent());
+    }
+}
+```
+
+`initialize` is a function coming from the BrickInterface and called just after the creation of Brick. It can take as
+parameters any Services you need (EventManager is a Service).
