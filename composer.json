@@ -1,0 +1,45 @@
+{
+    "name": "marmot/brick",
+    "description": "Brick of Marmot framework",
+    "type": "composer-plugin",
+    "keywords": [
+        "marmot"
+    ],
+    "homepage": "https://github.com/Marmot-framework/Brick",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Traini",
+            "email": "kevin@ktraini.com"
+        }
+    ],
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/gashmob"
+        }
+    ],
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "vimeo/psalm": "^5.8",
+        "symfony/phpunit-bridge": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Marmot\\Brick\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Marmot\\Brick\\": "tests/"
+        }
+    },
+    "scripts": {
+        "phpstan": "phpstan analyse -l 9 src",
+        "psalm": "psalm",
+        "test": "simple-phpunit tests"
+    }
+}
