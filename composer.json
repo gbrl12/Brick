@@ -20,7 +20,8 @@
         }
     ],
     "require": {
-        "php": ">=8.1"
+        "php": ">=8.1",
+        "composer/class-map-generator": "^1.0"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.10",
