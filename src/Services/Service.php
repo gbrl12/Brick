@@ -23,11 +23,15 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Events;
+namespace Marmot\Brick\Services;
 
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class Event
+final class Service
 {
+    public function __construct(
+        public ?string $config_filename = null,
+    ) {
+    }
 }
