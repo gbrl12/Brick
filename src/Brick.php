@@ -25,7 +25,7 @@
 
 namespace Marmot\Brick;
 
-interface BrickInterface
+interface Brick
 {
 
 }
