@@ -67,7 +67,7 @@ A little explanation on each directory :
 
 ### Implement `BrickInterface`
 
-The key component of a Brick is the `BrickInterface`. To create a new Brick, you must declare a class implementing this
+The key component of a Brick is the `Brick`. To create a new Brick, you must declare a class implementing this
 interface. Let's do that :
 
 ```php
@@ -77,7 +77,7 @@ namespace <Vendor>\HelloBrick;
 
 use Marmot\Brick\BrickInterface;
 
-class HelloBrick implements BrickInterface
+class HelloBrick implements Brick
 {
 }
 ```
