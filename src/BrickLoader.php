@@ -41,11 +41,12 @@ use ReflectionException;
 final class BrickLoader
 {
     private const PACKAGE_TYPE = 'marmot-brick';
+    private const CACHE_DIR    = 'bricks';
 
     /**
      * @var BrickPresenter[]
      */
-    private array $bricks = [];/** @phpstan-ignore-line */
+    private array $bricks = [];
 
     /**
      * Load all installed Bricks
@@ -67,6 +68,24 @@ final class BrickLoader
                 // Ignore ReflectionException, but let pass others
             }
         }
+
+        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, $this->bricks);
+
+        $this->initializeBricks();
+    }
+
+    public function loadFromCache(): void
+    {
+        /** @var BrickPresenter[] */
+        $this->bricks = CacheManager::instance()->load(self::CACHE_DIR, BrickLoader::class);
+
+        $this->initializeBricks();
+    }
+
+    // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
+
+    private function initializeBricks(): void
+    {
     }
 
     /**

@@ -27,13 +27,27 @@ namespace Marmot\Brick;
 
 final class CacheManager
 {
+    private static ?self $instance = null;
+
     public function __construct(
         private readonly string $cache_dir,
         private readonly Mode   $mode,
     ) {
+        if (self::$instance === null) {
+            self::$instance = $this;
+        }
     }
 
-    public function save(string $path, string $name, object $object): void
+    public static function instance(string $cache_dir = '', Mode $mode = Mode::PROD): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self($cache_dir, $mode);
+        }
+
+        return self::$instance;
+    }
+
+    public function save(string $path, string $name, mixed $object): void
     {
         if ($this->mode == Mode::PROD) { // Can save only in production
             $content = serialize($object);
