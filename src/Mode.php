@@ -25,9 +25,9 @@
 
 namespace Marmot\Brick;
 
-enum Mode
+enum Mode: string
 {
-    case PROD;
-    case DEV;
-    case TEST;
+    case PROD = 'prod';
+    case DEV  = 'dev';
+    case TEST = 'test';
 }

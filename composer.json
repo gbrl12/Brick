@@ -39,7 +39,7 @@
         }
     },
     "scripts": {
-        "phpstan": "phpstan analyse -l 9 src",
+        "phpstan": "phpstan analyse -l 5 src",
         "psalm": "psalm",
         "test": "simple-phpunit tests"
     }

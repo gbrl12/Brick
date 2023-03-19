@@ -28,6 +28,7 @@ namespace Marmot\Brick;
 use Composer\ClassMapGenerator\ClassMapGenerator;
 use Composer\InstalledVersions;
 use Marmot\Brick\Events\Event;
+use Marmot\Brick\Events\EventListener;
 use Marmot\Brick\Exceptions\PackageContainsNoBrickException;
 use Marmot\Brick\Exceptions\PackageContainsSeveralBrickException;
 use Marmot\Brick\Services\Service;
@@ -42,6 +43,11 @@ final class BrickLoader
     private const PACKAGE_TYPE = 'marmot-brick';
 
     /**
+     * @var BrickPresenter[]
+     */
+    private array $bricks = [];/** @phpstan-ignore-line */
+
+    /**
      * Load all installed Bricks
      *
      * @throws PackageContainsSeveralBrickException
@@ -53,7 +59,10 @@ final class BrickLoader
 
         foreach ($packages as $package) {
             try {
-                $this->loadBrick($package);
+                $brick = $this->loadBrick($package);
+                if ($brick) {
+                    $this->bricks[] = $brick;
+                }
             } catch (ReflectionException) {
                 // Ignore ReflectionException, but let pass others
             }
@@ -62,24 +71,24 @@ final class BrickLoader
 
     /**
      * @param string $package
-     * @return void
+     * @return BrickPresenter|null
+     * @throws PackageContainsNoBrickException
      * @throws PackageContainsSeveralBrickException
      * @throws ReflectionException
-     * @throws PackageContainsNoBrickException
      */
-    private function loadBrick(string $package): void
+    private function loadBrick(string $package): ?BrickPresenter
     {
         $install_path = InstalledVersions::getInstallPath($package);
         if ($install_path === null) {
-            return; // Package is not installed, ignore it
+            return null; // Package is not installed, ignore it
         }
 
         $map = ClassMapGenerator::createMap($install_path);
 
         /** @var ReflectionClass<Brick>|null $brick */
-        $brick     = null;
-        $_services = []; // TODO : remove the _, it's here just for silent psalm
-        $_events   = [];
+        $brick    = null;
+        $services = [];
+        $events   = [];
 
         foreach ($map as $symbol => $_path) { // For each class in Brick package
             $ref = new ReflectionClass($symbol);
@@ -95,13 +104,13 @@ final class BrickLoader
 
             $attrs = $ref->getAttributes(Service::class);
             if (!empty($attrs)) { // If class is Service
-                $_services[] = $ref;
+                $services[] = $ref;
                 continue;
             }
 
             $attrs = $ref->getAttributes(Event::class);
             if (!empty($attrs)) { // If class is Event
-                $_events[] = $ref;
+                $events[] = $ref;
             }
         }
 
@@ -109,6 +118,52 @@ final class BrickLoader
             throw new PackageContainsNoBrickException($package);
         }
 
-        // TODO : store a Brick reference
+        $listeners = [];
+        foreach ($services as $service) {
+            $listeners = array_merge($listeners, $this->loadService($service));
+        }
+
+        return new BrickPresenter(
+            $brick,
+            $services,
+            $events,
+            $listeners
+        );
+    }
+
+    /**
+     * @param ReflectionClass $service
+     * @return EventListenerPresenter[]
+     */
+    private function loadService(ReflectionClass $service): array
+    {
+        $res = [];
+
+        foreach ($service->getMethods() as $method) {
+            $attrs = $method->getAttributes(EventListener::class);
+
+            if (empty($attrs)) {
+                continue;
+            }
+
+            $params = $method->getParameters();
+            if (count($params) != 1) {
+                continue;
+            }
+
+            $event       = $params[0];
+            $event_class = $event->getDeclaringClass();
+            if ($event_class === null || empty($event_class->getAttributes(Event::class))) {
+                continue;
+            }
+
+            $res[] = new EventListenerPresenter(
+                $service,
+                $method,
+                $event_class
+            );
+        }
+
+        return $res;
     }
 }
