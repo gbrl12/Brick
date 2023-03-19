@@ -75,10 +75,17 @@ final class EventListenerPresenter
         ];
     }
 
+    /**
+     * @param array<string, string> $data
+     * @return void
+     */
     public function __unserialize(array $data): void
     {
+        /** @var ReflectionClass */
         $this->service = unserialize($data['service']);
-        $this->method  = unserialize($data['method']);
-        $this->event   = unserialize($data['event']);
+        /** @var ReflectionMethod */
+        $this->method = unserialize($data['method']);
+        /** @var ReflectionClass */
+        $this->event = unserialize($data['event']);
     }
 }

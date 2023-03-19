@@ -85,11 +85,19 @@ final class BrickPresenter
         ];
     }
 
+    /**
+     * @param array<string, string> $data
+     * @return void
+     */
     public function __unserialize(array $data): void
     {
-        $this->brick     = unserialize($data['brick']);
-        $this->services  = unserialize($data['services']);
-        $this->events    = unserialize($data['events']);
+        /** @var ReflectionClass */
+        $this->brick = unserialize($data['brick']);
+        /** @var ReflectionClass[] */
+        $this->services = unserialize($data['services']);
+        /** @var ReflectionClass[] */
+        $this->events = unserialize($data['events']);
+        /** @var EventListenerPresenter[] */
         $this->listeners = unserialize($data['listeners']);
     }
 }
