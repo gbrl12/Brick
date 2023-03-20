@@ -29,7 +29,7 @@ final class CacheManager
 {
     private static ?self $instance = null;
 
-    public function __construct(
+    private function __construct(
         private readonly string $cache_dir,
         private readonly Mode   $mode,
     ) {
