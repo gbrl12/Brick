@@ -33,8 +33,8 @@ final class CacheManager
         private readonly string $cache_dir,
         private readonly Mode   $mode,
     ) {
-        if (self::$instance === null) {
-            self::$instance = $this;
+        if (!file_exists($this->cache_dir)) {
+            mkdir($this->cache_dir);
         }
     }
 
@@ -63,8 +63,9 @@ final class CacheManager
      */
     public function load(string $path, string $name): mixed
     {
-        if ($this->mode == Mode::PROD) {
-            $content = file_get_contents($this->cache_dir . '/' . $this->getFileName($path, $name));
+        $filename = $this->cache_dir . '/' . $this->getFileName($path, $name);
+        if ($this->mode == Mode::PROD && file_exists($filename)) {
+            $content = file_get_contents($filename);
 
             if ($content) {
                 return unserialize($content);
@@ -78,9 +79,6 @@ final class CacheManager
 
     private function getFileName(string $path, string $name): string
     {
-        $npath = hash('sha512', $path);
-        $nname = hash('sha512', $name);
-
-        return $npath . '/' . $nname;
+        return hash('sha512', $path . $name);
     }
 }

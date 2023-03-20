@@ -23,14 +23,33 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmot\Brick\Fixtures;
 
-use PHPUnit\Framework\TestCase;
-
-class Test extends TestCase
+class ExampleObject
 {
-    public function testItPass()
+    public function __construct(
+        private readonly string $foo,
+        private readonly float  $pi,
+        private readonly bool   $reality,
+        private readonly int    $truth,
+    ) {
+    }
+
+    public function __serialize(): array
     {
-        self::assertTrue(true);
+        return [
+            'foo'     => $this->foo,
+            'pi'      => $this->pi,
+            'reality' => $this->reality,
+            'truth'   => $this->truth,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->foo     = $data['foo'];
+        $this->pi      = $data['pi'];
+        $this->reality = $data['reality'];
+        $this->truth   = $data['truth'];
     }
 }
