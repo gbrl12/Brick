@@ -35,7 +35,7 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * This class is used to load all Bricks with their Events and Services
+ * This class is used to load all Bricks
  */
 final class BrickLoader
 {
@@ -60,7 +60,7 @@ final class BrickLoader
 
         foreach ($packages as $package) {
             try {
-                $brick = $this->loadBrick($package);
+                $brick = $this->loadPackageBrick($package);
                 if ($brick) {
                     $this->manager->addBrick($brick);
                 }
@@ -74,6 +74,32 @@ final class BrickLoader
         $this->initializeBricks();
     }
 
+    /**
+     * Load one Brick located in $dir
+     *
+     * @throws PackageContainsSeveralBrickException
+     * @throws PackageContainsNoBrickException
+     */
+    public function loadFromDir(string $dir, string $package = ''): void
+    {
+        if ($this->manager === null) {
+            $this->manager = new BrickManager();
+        }
+
+        try {
+            $this->manager->addBrick($this->loadDirBrick($dir, $package));
+        } catch (ReflectionException) {
+            // Ignore ReflectionException, but let pass others
+        }
+
+        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, $this->manager->getBricks());
+
+        $this->initializeBricks();
+    }
+
+    /**
+     * Load Bricks stored in cache file
+     */
     public function loadFromCache(): void
     {
         if ($this->manager === null) {
@@ -98,20 +124,28 @@ final class BrickLoader
     }
 
     /**
-     * @param string $package
-     * @return BrickPresenter|null
      * @throws PackageContainsNoBrickException
      * @throws PackageContainsSeveralBrickException
      * @throws ReflectionException
      */
-    private function loadBrick(string $package): ?BrickPresenter
+    private function loadPackageBrick(string $package): ?BrickPresenter
     {
         $install_path = InstalledVersions::getInstallPath($package);
         if ($install_path === null) {
             return null; // Package is not installed, ignore it
         }
 
-        $map = ClassMapGenerator::createMap($install_path);
+        return $this->loadDirBrick($install_path, $package);
+    }
+
+    /**
+     * @throws PackageContainsNoBrickException
+     * @throws PackageContainsSeveralBrickException
+     * @throws ReflectionException
+     */
+    private function loadDirBrick(string $dir, string $package): BrickPresenter
+    {
+        $map = ClassMapGenerator::createMap($dir);
 
         /** @var ReflectionClass<Brick>|null $brick */
         $brick = null;
