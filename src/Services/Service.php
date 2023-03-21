@@ -30,8 +30,15 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Service
 {
+    /**
+     * @param string|null $config_filename Path to config file, relative from config dir
+     * @param bool        $autoload        If the ServiceManager can load this Service automatically or not. If set to
+     *                                     false, you have to add yourself this Service to the ServiceManager with
+     *                                     ServiceManager::addService() function. Recommended to let it on true
+     */
     public function __construct(
         public ?string $config_filename = null,
+        public bool    $autoload = true,
     ) {
     }
 }
