@@ -23,11 +23,11 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmot\Brick\Bricks;
 
 use Composer\ClassMapGenerator\ClassMapGenerator;
 use Composer\InstalledVersions;
-use Marmot\Brick\Bricks\BrickPresenter;
+use Marmot\Brick\CacheManager;
 use Marmot\Brick\Exceptions\PackageContainsNoBrickException;
 use Marmot\Brick\Exceptions\PackageContainsSeveralBrickException;
 use ReflectionClass;
@@ -84,6 +84,9 @@ final class BrickLoader
 
     private function initializeBricks(): void
     {
+        // TODO : load Events, Services and EventListeners
+
+        // TODO : call initialize on each Bricks
     }
 
     /**
