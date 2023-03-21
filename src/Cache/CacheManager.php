@@ -23,7 +23,9 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmot\Brick\Cache;
+
+use Marmot\Brick\Mode;
 
 final class CacheManager
 {

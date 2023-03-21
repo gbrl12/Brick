@@ -25,6 +25,7 @@
 
 namespace Marmot\Brick;
 
+use Marmot\Brick\Cache\CacheManager;
 use Marmot\Brick\Fixtures\ExampleObject;
 
 require_once __DIR__ . '/../vendor/autoload.php';

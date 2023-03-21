@@ -25,6 +25,7 @@
 
 namespace Marmot\Brick\Bricks;
 
+use Marmot\Brick\Brick;
 use ReflectionClass;
 
 final class BrickPresenter

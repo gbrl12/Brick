@@ -27,7 +27,8 @@ namespace Marmot\Brick\Bricks;
 
 use Composer\ClassMapGenerator\ClassMapGenerator;
 use Composer\InstalledVersions;
-use Marmot\Brick\CacheManager;
+use Marmot\Brick\Brick;
+use Marmot\Brick\Cache\CacheManager;
 use Marmot\Brick\Exceptions\PackageContainsNoBrickException;
 use Marmot\Brick\Exceptions\PackageContainsSeveralBrickException;
 use ReflectionClass;
