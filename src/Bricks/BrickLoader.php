@@ -42,10 +42,7 @@ final class BrickLoader
     private const PACKAGE_TYPE = 'marmot-brick';
     private const CACHE_DIR    = 'bricks';
 
-    /**
-     * @var BrickPresenter[]
-     */
-    private array $bricks = [];
+    private ?BrickManager $manager = null;
 
     /**
      * Load all installed Bricks
@@ -57,26 +54,36 @@ final class BrickLoader
     {
         $packages = InstalledVersions::getInstalledPackagesByType(self::PACKAGE_TYPE);
 
+        if ($this->manager === null) {
+            $this->manager = new BrickManager();
+        }
+
         foreach ($packages as $package) {
             try {
                 $brick = $this->loadBrick($package);
                 if ($brick) {
-                    $this->bricks[] = $brick;
+                    $this->manager->addBrick($brick);
                 }
             } catch (ReflectionException) {
                 // Ignore ReflectionException, but let pass others
             }
         }
 
-        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, $this->bricks);
+        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, $this->manager->getBricks());
 
         $this->initializeBricks();
     }
 
     public function loadFromCache(): void
     {
+        if ($this->manager === null) {
+            $this->manager = new BrickManager();
+        }
+
         /** @var BrickPresenter[] */
-        $this->bricks = CacheManager::instance()->load(self::CACHE_DIR, BrickLoader::class);
+        $bricks = CacheManager::instance()->load(self::CACHE_DIR, BrickLoader::class);
+
+        $this->manager->addBricks(...$bricks);
 
         $this->initializeBricks();
     }
