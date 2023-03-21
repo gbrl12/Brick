@@ -27,11 +27,9 @@ namespace Marmot\Brick;
 
 use Composer\ClassMapGenerator\ClassMapGenerator;
 use Composer\InstalledVersions;
-use Marmot\Brick\Events\Event;
-use Marmot\Brick\Events\EventListener;
+use Marmot\Brick\Bricks\BrickPresenter;
 use Marmot\Brick\Exceptions\PackageContainsNoBrickException;
 use Marmot\Brick\Exceptions\PackageContainsSeveralBrickException;
-use Marmot\Brick\Services\Service;
 use ReflectionClass;
 use ReflectionException;
 
@@ -105,9 +103,9 @@ final class BrickLoader
         $map = ClassMapGenerator::createMap($install_path);
 
         /** @var ReflectionClass<Brick>|null $brick */
-        $brick    = null;
-        $services = [];
-        $events   = [];
+        $brick = null;
+        /** @var ReflectionClass[] $class_map */
+        $class_map = [];
 
         foreach ($map as $symbol => $_path) { // For each class in Brick package
             $ref = new ReflectionClass($symbol);
@@ -121,68 +119,17 @@ final class BrickLoader
                 }
             }
 
-            $attrs = $ref->getAttributes(Service::class);
-            if (!empty($attrs)) { // If class is Service
-                $services[] = $ref;
-                continue;
-            }
-
-            $attrs = $ref->getAttributes(Event::class);
-            if (!empty($attrs)) { // If class is Event
-                $events[] = $ref;
-            }
+            $class_map[] = $ref;
         }
 
         if ($brick === null) {
             throw new PackageContainsNoBrickException($package);
         }
 
-        $listeners = [];
-        foreach ($services as $service) {
-            $listeners = array_merge($listeners, $this->loadService($service));
-        }
-
         return new BrickPresenter(
+            $package,
             $brick,
-            $services,
-            $events,
-            $listeners
+            $class_map,
         );
-    }
-
-    /**
-     * @param ReflectionClass $service
-     * @return EventListenerPresenter[]
-     */
-    private function loadService(ReflectionClass $service): array
-    {
-        $res = [];
-
-        foreach ($service->getMethods() as $method) {
-            $attrs = $method->getAttributes(EventListener::class);
-
-            if (empty($attrs)) {
-                continue;
-            }
-
-            $params = $method->getParameters();
-            if (count($params) != 1) {
-                continue;
-            }
-
-            $event       = $params[0];
-            $event_class = $event->getDeclaringClass();
-            if ($event_class === null || empty($event_class->getAttributes(Event::class))) {
-                continue;
-            }
-
-            $res[] = new EventListenerPresenter(
-                $service,
-                $method,
-                $event_class
-            );
-        }
-
-        return $res;
     }
 }
