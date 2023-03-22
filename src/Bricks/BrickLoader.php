@@ -42,8 +42,6 @@ final class BrickLoader
     private const PACKAGE_TYPE = 'marmot-brick';
     private const CACHE_DIR    = 'bricks';
 
-    private ?BrickManager $manager = null;
-
     /**
      * Load all installed Bricks
      *
@@ -54,24 +52,18 @@ final class BrickLoader
     {
         $packages = InstalledVersions::getInstalledPackagesByType(self::PACKAGE_TYPE);
 
-        if ($this->manager === null) {
-            $this->manager = new BrickManager();
-        }
-
         foreach ($packages as $package) {
             try {
                 $brick = $this->loadPackageBrick($package);
                 if ($brick) {
-                    $this->manager->addBrick($brick);
+                    BrickManager::instance()->addBrick($brick);
                 }
             } catch (ReflectionException) {
                 // Ignore ReflectionException, but let pass others
             }
         }
 
-        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, $this->manager->getBricks());
-
-        $this->initializeBricks();
+        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, BrickManager::instance()->getBricks());
     }
 
     /**
@@ -82,19 +74,13 @@ final class BrickLoader
      */
     public function loadFromDir(string $dir, string $package = ''): void
     {
-        if ($this->manager === null) {
-            $this->manager = new BrickManager();
-        }
-
         try {
-            $this->manager->addBrick($this->loadDirBrick($dir, $package));
+            BrickManager::instance()->addBrick($this->loadDirBrick($dir, $package));
         } catch (ReflectionException) {
             // Ignore ReflectionException, but let pass others
         }
 
-        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, $this->manager->getBricks());
-
-        $this->initializeBricks();
+        CacheManager::instance()->save(self::CACHE_DIR, BrickLoader::class, BrickManager::instance()->getBricks());
     }
 
     /**
@@ -102,26 +88,13 @@ final class BrickLoader
      */
     public function loadFromCache(): void
     {
-        if ($this->manager === null) {
-            $this->manager = new BrickManager();
-        }
-
         /** @var BrickPresenter[] */
         $bricks = CacheManager::instance()->load(self::CACHE_DIR, BrickLoader::class);
 
-        $this->manager->addBricks(...$bricks);
-
-        $this->initializeBricks();
+        BrickManager::instance()->addBricks(...$bricks);
     }
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
-
-    private function initializeBricks(): void
-    {
-        // TODO : load Events, Services and EventListeners
-
-        // TODO : call initialize on each Bricks
-    }
 
     /**
      * @throws PackageContainsNoBrickException

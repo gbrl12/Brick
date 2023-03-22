@@ -31,6 +31,23 @@ use ReflectionClass;
 #[Service(autoload: false)]
 final class BrickManager
 {
+    private static ?self $instance = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function instance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
+
     /**
      * @var BrickPresenter[]
      */
@@ -66,6 +83,8 @@ final class BrickManager
     {
         return $this->bricks;
     }
+
+    // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
     /**
      * @psalm-param ?callable(ReflectionClass): bool $filter
