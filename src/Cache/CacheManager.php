@@ -26,7 +26,9 @@
 namespace Marmot\Brick\Cache;
 
 use Marmot\Brick\Mode;
+use Marmot\Brick\Services\Service;
 
+#[Service(autoload: false)]
 final class CacheManager
 {
     private static ?self $instance = null;
