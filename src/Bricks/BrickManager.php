@@ -48,6 +48,20 @@ final class BrickManager
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
+    public function initialize(): void
+    {
+        // TODO : get Services
+        $_services = $this->getClassMap(
+            static fn(ReflectionClass $class) => !empty($class->getAttributes(Service::class))
+        );
+
+        // TODO : get Events
+
+        // TODO : get EventListeners
+    }
+
+    // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
+
     /**
      * @var BrickPresenter[]
      */
@@ -83,8 +97,6 @@ final class BrickManager
     {
         return $this->bricks;
     }
-
-    // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
     /**
      * @psalm-param ?callable(ReflectionClass): bool $filter
