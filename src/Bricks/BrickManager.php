@@ -46,6 +46,14 @@ final class BrickManager
         return self::$instance;
     }
 
+    /**
+     * !DANGER! Be careful and very sure before using this method
+     */
+    public static function flush(): void
+    {
+        self::$instance = null;
+    }
+
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
     /**

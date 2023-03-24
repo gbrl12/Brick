@@ -27,6 +27,7 @@ namespace Marmot\Brick\Bricks;
 
 use Marmot\Brick\Brick;
 use ReflectionClass;
+use ReflectionException;
 
 final class BrickPresenter
 {
@@ -49,5 +50,38 @@ final class BrickPresenter
     public function getClassMap(?callable $filter = null): array
     {
         return array_filter($this->class_map, $filter);
+    }
+
+    public function __serialize(): array
+    {
+        return [
+            'package'   => $this->package,
+            'brick'     => $this->brick->getName(),
+            'class_map' => array_map(
+                static fn(ReflectionClass $class) => $class->getName(),
+                $this->class_map
+            ),
+        ];
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function __unserialize(array $data): void
+    {
+        /** @var string */
+        $this->package = $data['package'];
+
+        /** @var class-string */
+        $brick_name = $data['brick'];
+        /** @var ReflectionClass<Brick> */
+        $this->brick = new ReflectionClass($brick_name);
+
+        /** @var class-string[] */
+        $class_map_names = $data['class_map'];
+        $this->class_map = array_map(
+            static fn(string $class) => new ReflectionClass($class),
+            $class_map_names
+        );
     }
 }

@@ -23,34 +23,9 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmot\Brick\Fixtures\InvalidBrick;
 
-use Marmot\Brick\Cache\CacheManager;
-use PHPUnit\Framework\TestCase;
-
-require_once __DIR__ . '/../vendor/autoload.php';
-
-abstract class BrickTestCase extends TestCase
+class NotABrick
 {
-    private static function rmDir(string $dir): void
-    {
-        $files = array_diff(scandir($dir), array('.', '..'));
 
-        foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? self::rmDir("$dir/$file") : unlink("$dir/$file");
-        }
-
-        rmdir($dir);
-    }
-
-    public static function setUpBeforeClass(): void
-    {
-        CacheManager::instance(__DIR__ . '/cache');
-    }
-
-    protected function tearDown(): void
-    {
-        self::rmDir(__DIR__ . '/cache');
-        mkdir(__DIR__ . '/cache');
-    }
 }

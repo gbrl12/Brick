@@ -33,21 +33,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 class CacheManagerTest extends BrickTestCase
 {
-    private static CacheManager $cm;
-
-    public static function setUpBeforeClass(): void
-    {
-        self::$cm = CacheManager::instance(__DIR__ . '/cache');
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        self::rmDir(__DIR__ . '/cache');
-    }
-
     public function testCanSave(): void
     {
-        self::$cm->save('', 'test', [
+        CacheManager::instance()->save('', 'test', [
             'foo' => 'bar',
         ]);
 
@@ -57,7 +45,7 @@ class CacheManagerTest extends BrickTestCase
 
     public function testCannotLoad(): void
     {
-        $res = self::$cm->load('', 'gbleskefe');
+        $res = CacheManager::instance()->load('', 'gbleskefe');
 
         self::assertNull($res);
     }
@@ -68,9 +56,9 @@ class CacheManagerTest extends BrickTestCase
             'pi' => 3.14
         ];
 
-        self::$cm->save('', 'array', $content);
+        CacheManager::instance()->save('', 'array', $content);
 
-        $res = self::$cm->load('', 'array');
+        $res = CacheManager::instance()->load('', 'array');
 
         self::assertNotNull($res);
         self::assertIsArray($res);
@@ -86,9 +74,9 @@ class CacheManagerTest extends BrickTestCase
             42
         );
 
-        self::$cm->save('', ExampleObject::class, $object);
+        CacheManager::instance()->save('', ExampleObject::class, $object);
 
-        $res = self::$cm->load('', ExampleObject::class);
+        $res = CacheManager::instance()->load('', ExampleObject::class);
 
         self::assertNotNull($res);
         self::assertIsObject($res);
@@ -98,6 +86,6 @@ class CacheManagerTest extends BrickTestCase
 
     public function testInstanceReturnsSameInstance(): void
     {
-        self::assertSame(self::$cm, CacheManager::instance());
+        self::assertSame(CacheManager::instance(), CacheManager::instance());
     }
 }
