@@ -85,9 +85,17 @@ final class BrickLoader
 
     /**
      * Load Bricks stored in cache file
+     *
+     * @throws PackageContainsSeveralBrickException
+     * @throws PackageContainsNoBrickException
      */
     public function loadFromCache(): void
     {
+        if (!CacheManager::instance()->exists(self::CACHE_DIR, BrickLoader::class)) {
+            $this->loadBricks();
+            return;
+        }
+
         /** @var BrickPresenter[] */
         $bricks = CacheManager::instance()->load(self::CACHE_DIR, BrickLoader::class);
 

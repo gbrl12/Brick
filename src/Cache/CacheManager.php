@@ -77,6 +77,13 @@ final class CacheManager
         return null;
     }
 
+    public function exists(string $path, string $name): bool
+    {
+        $filename = $this->cache_dir . '/' . $this->getFileName($path, $name);
+
+        return $this->mode == Mode::PROD && file_exists($filename);
+    }
+
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
     private function getFileName(string $path, string $name): string
