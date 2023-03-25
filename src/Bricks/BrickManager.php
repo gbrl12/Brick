@@ -32,7 +32,6 @@ use Marmot\Brick\Exceptions\ServicesAreCycleDependentException;
 use Marmot\Brick\Services\Service;
 use Marmot\Brick\Services\ServiceManager;
 use ReflectionClass;
-use Throwable;
 
 #[Service(autoload: false)]
 final class BrickManager
@@ -63,14 +62,17 @@ final class BrickManager
     public function initialize(string $config_path): void
     {
         // Get Services
-        $services = $this->getClassMap(
+        $services        = $this->getClassMap(
             static fn(ReflectionClass $class) => !empty($class->getAttributes(Service::class))
         );
-        new ServiceManager($services, $config_path);
+        $service_manager = new ServiceManager($services, $config_path);
+        $service_manager->addService($this);
 
         // TODO : get Events
 
         // TODO : get EventListeners
+
+        // TODO : call initialize on Bricks
     }
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.

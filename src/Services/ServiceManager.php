@@ -76,6 +76,9 @@ final class ServiceManager
         if (!empty($leftovers)) {
             throw new ServicesAreCycleDependentException($leftovers);
         }
+
+        // Add self to services
+        $this->addService($this);
     }
 
     public static function instance(): self
@@ -86,7 +89,7 @@ final class ServiceManager
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
     /**
-     * @var array<class-string, object>
+     * @var class-string-map<T, T>
      */
     private array $services = [];
 
@@ -157,6 +160,8 @@ final class ServiceManager
     }
 
     /**
+     * @template T of object
+     * @psalm-param T $service
      * @throws ServiceAlreadyLoadedException
      */
     public function addService(object $service): self
@@ -181,8 +186,9 @@ final class ServiceManager
     }
 
     /**
-     * @param class-string $service
-     * @return object|null
+     * @template T as object
+     * @psalm-param class-string<T> $service
+     * @psalm-return T|null
      */
     public function getService(string $service): ?object
     {
