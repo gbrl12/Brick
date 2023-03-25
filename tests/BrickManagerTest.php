@@ -27,6 +27,9 @@ namespace Marmot\Brick;
 
 use Marmot\Brick\Bricks\BrickLoader;
 use Marmot\Brick\Bricks\BrickManager;
+use Marmot\Brick\Events\EventManager;
+use Marmot\Brick\Exceptions\EventNotRegisteredException;
+use Marmot\Brick\Fixtures\Brick\AnEvent;
 use Marmot\Brick\Fixtures\Brick\AService;
 use Marmot\Brick\Services\ServiceManager;
 
@@ -44,6 +47,8 @@ class BrickManagerTest extends BrickTestCase
             self::fail($e);
         }
 
+        self::assertCount(1, BrickManager::instance()->getBricks());
+
         self::assertTrue(ServiceManager::instance()->hasService(AService::class));
         self::assertTrue(ServiceManager::instance()->hasService(ServiceManager::class));
         self::assertTrue(ServiceManager::instance()->hasService(BrickManager::class));
@@ -53,5 +58,14 @@ class BrickManagerTest extends BrickTestCase
         $config = $service->getConfig();
         self::assertIsArray($config);
         self::assertEquals(['hello' => 'world!'], $config);
+
+        $event_manager = ServiceManager::instance()->getService(EventManager::class);
+        self::assertNotNull($event_manager);
+        try {
+            $event = $event_manager->dispatch(new AnEvent(-2));
+            self::assertEquals(42, $event->value);
+        } catch (EventNotRegisteredException $e) {
+            self::fail($e);
+        }
     }
 }

@@ -25,28 +25,13 @@
 
 namespace Marmot\Brick\Fixtures\Brick;
 
-use Marmot\Brick\Events\EventListener;
-use Marmot\Brick\Services\Service;
+use Marmot\Brick\Events\Event;
 
-#[Service('config.yml')]
-class AService
+#[Event]
+class AnEvent
 {
     public function __construct(
-        private readonly array $config
+        public int $value
     ) {
-    }
-
-    /**
-     * @return array
-     */
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
-
-    #[EventListener]
-    public function anEventListener(AnEvent $event): void
-    {
-        $event->value = 42;
     }
 }

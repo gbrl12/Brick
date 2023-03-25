@@ -25,13 +25,18 @@
 
 namespace Marmot\Brick\Bricks;
 
+use Marmot\Brick\Events\Event;
+use Marmot\Brick\Events\EventListener;
+use Marmot\Brick\Events\EventManager;
 use Marmot\Brick\Exceptions\ClassIsNotServiceException;
+use Marmot\Brick\Exceptions\EventNotRegisteredException;
 use Marmot\Brick\Exceptions\ServiceAlreadyLoadedException;
 use Marmot\Brick\Exceptions\ServiceHasNoConstructor;
 use Marmot\Brick\Exceptions\ServicesAreCycleDependentException;
 use Marmot\Brick\Services\Service;
 use Marmot\Brick\Services\ServiceManager;
 use ReflectionClass;
+use ReflectionNamedType;
 
 #[Service(autoload: false)]
 final class BrickManager
@@ -58,6 +63,7 @@ final class BrickManager
      * @throws ClassIsNotServiceException
      * @throws ServiceHasNoConstructor
      * @throws ServiceAlreadyLoadedException
+     * @throws EventNotRegisteredException
      */
     public function initialize(string $config_path): void
     {
@@ -68,11 +74,39 @@ final class BrickManager
         $service_manager = new ServiceManager($services, $config_path);
         $service_manager->addService($this);
 
-        // TODO : get Events
+        // Get Events
+        $events        = $this->getClassMap(
+            static fn(ReflectionClass $class) => !empty($class->getAttributes(Event::class))
+        );
+        $event_manager = new EventManager($events, $service_manager);
+        $service_manager->addService($event_manager);
 
-        // TODO : get EventListeners
+        // Get EventListeners
+        foreach ($services as $service) {
+            foreach ($service->getMethods() as $method) {
+                $attr = $method->getAttributes(EventListener::class);
+                if (empty($attr)) {
+                    continue; // Method must have EventListener attribute
+                }
 
-        // TODO : call initialize on Bricks
+                if ($method->getNumberOfParameters() != 1) {
+                    continue; // Method must have only 1 parameter
+                }
+
+                $param      = $method->getParameters()[0];
+                $param_type = $param->getType();
+                if (!$param_type instanceof ReflectionNamedType) {
+                    continue; // The param type must be explicit
+                }
+                /** @var class-string */
+                $type_name = $param_type->getName();
+
+                // We can add the method to listeners
+                $event_manager->addListener($type_name, $method);
+            }
+        }
+
+        // TODO : call init on Bricks
     }
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.

@@ -23,30 +23,15 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures\Brick;
+namespace Marmot\Brick\Exceptions;
 
-use Marmot\Brick\Events\EventListener;
-use Marmot\Brick\Services\Service;
-
-#[Service('config.yml')]
-class AService
+class EventNotRegisteredException extends \Exception
 {
-    public function __construct(
-        private readonly array $config
-    ) {
-    }
-
     /**
-     * @return array
+     * @param class-string $event
      */
-    public function getConfig(): array
+    public function __construct(string $event)
     {
-        return $this->config;
-    }
-
-    #[EventListener]
-    public function anEventListener(AnEvent $event): void
-    {
-        $event->value = 42;
+        parent::__construct('Event ' . $event . ' not found in registered Events');
     }
 }
