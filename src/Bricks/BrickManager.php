@@ -26,6 +26,7 @@
 namespace Marmot\Brick\Bricks;
 
 use Marmot\Brick\Services\Service;
+use Marmot\Brick\Services\ServiceManager;
 use ReflectionClass;
 
 #[Service(autoload: false)]
@@ -48,12 +49,13 @@ final class BrickManager
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
-    public function initialize(): void
+    public function initialize(string $config_path): void
     {
-        // TODO : get Services
-        $_services = $this->getClassMap(
+        // Get Services
+        $services = $this->getClassMap(
             static fn(ReflectionClass $class) => !empty($class->getAttributes(Service::class))
         );
+        new ServiceManager($services, $config_path);
 
         // TODO : get Events
 
