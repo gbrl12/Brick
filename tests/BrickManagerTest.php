@@ -23,15 +23,15 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmotte\Brick;
 
-use Marmot\Brick\Bricks\BrickLoader;
-use Marmot\Brick\Bricks\BrickManager;
-use Marmot\Brick\Events\EventManager;
-use Marmot\Brick\Exceptions\EventNotRegisteredException;
-use Marmot\Brick\Fixtures\Brick\AnEvent;
-use Marmot\Brick\Fixtures\Brick\AService;
-use Marmot\Brick\Services\ServiceManager;
+use Marmotte\Brick\Bricks\BrickLoader;
+use Marmotte\Brick\Bricks\BrickManager;
+use Marmotte\Brick\Events\EventManager;
+use Marmotte\Brick\Exceptions\EventNotRegisteredException;
+use Marmotte\Brick\Fixtures\Brick\AnEvent;
+use Marmotte\Brick\Fixtures\Brick\AService;
+use Marmotte\Brick\Services\ServiceManager;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

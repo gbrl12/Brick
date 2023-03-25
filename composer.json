@@ -1,5 +1,5 @@
 {
-    "name": "marmot/brick",
+    "name": "marmotte/brick",
     "description": "Brick of Marmot framework",
     "type": "library",
     "keywords": [
@@ -30,12 +30,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Marmot\\Brick\\": "src/"
+            "Marmotte\\Brick\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Marmot\\Brick\\": "tests/"
+            "Marmotte\\Brick\\": "tests/"
         }
     },
     "scripts": {

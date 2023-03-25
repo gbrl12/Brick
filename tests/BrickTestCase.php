@@ -23,9 +23,9 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmotte\Brick;
 
-use Marmot\Brick\Cache\CacheManager;
+use Marmotte\Brick\Cache\CacheManager;
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/../vendor/autoload.php';

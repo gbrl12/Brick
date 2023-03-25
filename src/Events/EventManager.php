@@ -23,11 +23,11 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Events;
+namespace Marmotte\Brick\Events;
 
-use Marmot\Brick\Exceptions\EventNotRegisteredException;
-use Marmot\Brick\Services\Service;
-use Marmot\Brick\Services\ServiceManager;
+use Marmotte\Brick\Exceptions\EventNotRegisteredException;
+use Marmotte\Brick\Services\Service;
+use Marmotte\Brick\Services\ServiceManager;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;

@@ -23,12 +23,12 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Services;
+namespace Marmotte\Brick\Services;
 
-use Marmot\Brick\Exceptions\ClassIsNotServiceException;
-use Marmot\Brick\Exceptions\ServiceAlreadyLoadedException;
-use Marmot\Brick\Exceptions\ServiceHasNoConstructor;
-use Marmot\Brick\Exceptions\ServicesAreCycleDependentException;
+use Marmotte\Brick\Exceptions\ClassIsNotServiceException;
+use Marmotte\Brick\Exceptions\ServiceAlreadyLoadedException;
+use Marmotte\Brick\Exceptions\ServiceHasNoConstructor;
+use Marmotte\Brick\Exceptions\ServicesAreCycleDependentException;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;

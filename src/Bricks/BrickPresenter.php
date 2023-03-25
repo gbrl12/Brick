@@ -23,9 +23,9 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Bricks;
+namespace Marmotte\Brick\Bricks;
 
-use Marmot\Brick\Brick;
+use Marmotte\Brick\Brick;
 use ReflectionClass;
 use ReflectionException;
 

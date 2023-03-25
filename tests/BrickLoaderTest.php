@@ -23,12 +23,12 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmotte\Brick;
 
-use Marmot\Brick\Bricks\BrickLoader;
-use Marmot\Brick\Bricks\BrickManager;
-use Marmot\Brick\Exceptions\PackageContainsNoBrickException;
-use Marmot\Brick\Exceptions\PackageContainsSeveralBrickException;
+use Marmotte\Brick\Bricks\BrickLoader;
+use Marmotte\Brick\Bricks\BrickManager;
+use Marmotte\Brick\Exceptions\PackageContainsNoBrickException;
+use Marmotte\Brick\Exceptions\PackageContainsSeveralBrickException;
 use Throwable;
 
 require_once __DIR__ . '/../vendor/autoload.php';

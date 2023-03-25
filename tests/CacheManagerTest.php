@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmotte\Brick;
 
-use Marmot\Brick\Cache\CacheManager;
-use Marmot\Brick\Fixtures\ExampleObject;
+use Marmotte\Brick\Cache\CacheManager;
+use Marmotte\Brick\Fixtures\ExampleObject;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
