@@ -25,9 +25,14 @@
 
 namespace Marmot\Brick\Bricks;
 
+use Marmot\Brick\Exceptions\ClassIsNotServiceException;
+use Marmot\Brick\Exceptions\ServiceAlreadyLoadedException;
+use Marmot\Brick\Exceptions\ServiceHasNoConstructor;
+use Marmot\Brick\Exceptions\ServicesAreCycleDependentException;
 use Marmot\Brick\Services\Service;
 use Marmot\Brick\Services\ServiceManager;
 use ReflectionClass;
+use Throwable;
 
 #[Service(autoload: false)]
 final class BrickManager
@@ -49,6 +54,12 @@ final class BrickManager
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.
 
+    /**
+     * @throws ServicesAreCycleDependentException
+     * @throws ClassIsNotServiceException
+     * @throws ServiceHasNoConstructor
+     * @throws ServiceAlreadyLoadedException
+     */
     public function initialize(string $config_path): void
     {
         // Get Services
