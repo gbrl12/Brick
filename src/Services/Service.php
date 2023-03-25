@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Services;
+namespace Marmotte\Brick\Services;
 
 use Attribute;
 

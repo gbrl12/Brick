@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures;
+namespace Marmotte\Brick\Fixtures;
 
 class ExampleObject
 {

@@ -23,9 +23,9 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures\InvalidBrick2;
+namespace Marmotte\Brick\Fixtures\InvalidBrick2;
 
-use Marmot\Brick\Brick;
+use Marmotte\Brick\Brick;
 
 class ABrick implements Brick
 {

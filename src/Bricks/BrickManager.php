@@ -23,18 +23,18 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Bricks;
+namespace Marmotte\Brick\Bricks;
 
-use Marmot\Brick\Events\Event;
-use Marmot\Brick\Events\EventListener;
-use Marmot\Brick\Events\EventManager;
-use Marmot\Brick\Exceptions\ClassIsNotServiceException;
-use Marmot\Brick\Exceptions\EventNotRegisteredException;
-use Marmot\Brick\Exceptions\ServiceAlreadyLoadedException;
-use Marmot\Brick\Exceptions\ServiceHasNoConstructor;
-use Marmot\Brick\Exceptions\ServicesAreCycleDependentException;
-use Marmot\Brick\Services\Service;
-use Marmot\Brick\Services\ServiceManager;
+use Marmotte\Brick\Events\Event;
+use Marmotte\Brick\Events\EventListener;
+use Marmotte\Brick\Events\EventManager;
+use Marmotte\Brick\Exceptions\ClassIsNotServiceException;
+use Marmotte\Brick\Exceptions\EventNotRegisteredException;
+use Marmotte\Brick\Exceptions\ServiceAlreadyLoadedException;
+use Marmotte\Brick\Exceptions\ServiceHasNoConstructor;
+use Marmotte\Brick\Exceptions\ServicesAreCycleDependentException;
+use Marmotte\Brick\Services\Service;
+use Marmotte\Brick\Services\ServiceManager;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;

@@ -23,9 +23,9 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures\Brick;
+namespace Marmotte\Brick\Fixtures\Brick;
 
-use Marmot\Brick\Events\Event;
+use Marmotte\Brick\Events\Event;
 
 #[Event]
 class AnEvent

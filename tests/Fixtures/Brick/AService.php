@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures\Brick;
+namespace Marmotte\Brick\Fixtures\Brick;
 
-use Marmot\Brick\Events\EventListener;
-use Marmot\Brick\Services\Service;
+use Marmotte\Brick\Events\EventListener;
+use Marmotte\Brick\Services\Service;
 
 #[Service('config.yml')]
 class AService

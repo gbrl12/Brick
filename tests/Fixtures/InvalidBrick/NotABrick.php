@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures\InvalidBrick;
+namespace Marmotte\Brick\Fixtures\InvalidBrick;
 
 class NotABrick
 {

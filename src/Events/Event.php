@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Events;
+namespace Marmotte\Brick\Events;
 
 use Attribute;
 

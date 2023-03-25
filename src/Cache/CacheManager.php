@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Cache;
+namespace Marmotte\Brick\Cache;
 
-use Marmot\Brick\Mode;
-use Marmot\Brick\Services\Service;
+use Marmotte\Brick\Mode;
+use Marmotte\Brick\Services\Service;
 
 #[Service(autoload: false)]
 final class CacheManager

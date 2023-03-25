@@ -23,10 +23,10 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Fixtures\Brick;
+namespace Marmotte\Brick\Fixtures\Brick;
 
-use Marmot\Brick\Brick;
-use Marmot\Brick\Events\EventManager;
+use Marmotte\Brick\Brick;
+use Marmotte\Brick\Events\EventManager;
 
 class ABrick implements Brick
 {

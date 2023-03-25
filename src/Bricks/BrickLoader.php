@@ -23,14 +23,14 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Bricks;
+namespace Marmotte\Brick\Bricks;
 
 use Composer\ClassMapGenerator\ClassMapGenerator;
 use Composer\InstalledVersions;
-use Marmot\Brick\Brick;
-use Marmot\Brick\Cache\CacheManager;
-use Marmot\Brick\Exceptions\PackageContainsNoBrickException;
-use Marmot\Brick\Exceptions\PackageContainsSeveralBrickException;
+use Marmotte\Brick\Brick;
+use Marmotte\Brick\Cache\CacheManager;
+use Marmotte\Brick\Exceptions\PackageContainsNoBrickException;
+use Marmotte\Brick\Exceptions\PackageContainsSeveralBrickException;
 use ReflectionClass;
 use ReflectionException;
 

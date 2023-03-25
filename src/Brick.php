@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick;
+namespace Marmotte\Brick;
 
 interface Brick
 {

@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-namespace Marmot\Brick\Exceptions;
+namespace Marmotte\Brick\Exceptions;
 
 class ServiceAlreadyLoadedException extends \Exception
 {
