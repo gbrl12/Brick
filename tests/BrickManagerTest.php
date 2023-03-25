@@ -67,5 +67,7 @@ class BrickManagerTest extends BrickTestCase
         } catch (EventNotRegisteredException $e) {
             self::fail($e);
         }
+
+        self::assertEquals(2, $service::$counter);
     }
 }

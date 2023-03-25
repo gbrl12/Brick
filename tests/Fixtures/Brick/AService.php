@@ -44,9 +44,12 @@ class AService
         return $this->config;
     }
 
+    public static int $counter = 0;
+
     #[EventListener]
     public function anEventListener(AnEvent $event): void
     {
+        self::$counter++;
         $event->value = 42;
     }
 }

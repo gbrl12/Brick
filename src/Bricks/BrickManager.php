@@ -36,6 +36,7 @@ use Marmot\Brick\Exceptions\ServicesAreCycleDependentException;
 use Marmot\Brick\Services\Service;
 use Marmot\Brick\Services\ServiceManager;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionNamedType;
 
 #[Service(autoload: false)]
@@ -106,7 +107,36 @@ final class BrickManager
             }
         }
 
-        // TODO : call init on Bricks
+        // Call init on Bricks
+        foreach ($this->bricks as $brick_presenter) {
+            $brick = $brick_presenter->brick;
+            try {
+                $init = $brick->getMethod('init');
+
+                $args = [];
+                foreach ($init->getParameters() as $param) {
+                    $type = $param->getType();
+                    if (!$type instanceof ReflectionNamedType) {
+                        break;
+                    }
+
+                    $type_name = $type->getName();
+                    if (class_exists($type_name) && $service_manager->hasService($type_name)) {
+                        $args[] = $service_manager->getService($type_name);
+                    } else {
+                        break;
+                    }
+                }
+                if (count($args) != $init->getNumberOfParameters()) {
+                    continue;
+                }
+
+                $init->invoke($brick->newInstance(), ...$args);
+            } catch (ReflectionException) {
+                // Method init not found, ignore it.
+                // It's not mandatory to have an init method
+            }
+        }
     }
 
     // _.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-._.-.

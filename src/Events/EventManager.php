@@ -70,12 +70,11 @@ final class EventManager
      * @template T of object
      * @psalm-param T $event
      * @return T
-     * @throws EventNotRegisteredException
      */
     public function dispatch(object $event): object
     {
         if (!array_key_exists($event::class, $this->events)) {
-            throw new EventNotRegisteredException($event::class);
+            return $event;
         }
 
         foreach ($this->events[$event::class] as $listener) {

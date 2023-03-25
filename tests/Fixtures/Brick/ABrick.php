@@ -26,8 +26,12 @@
 namespace Marmot\Brick\Fixtures\Brick;
 
 use Marmot\Brick\Brick;
+use Marmot\Brick\Events\EventManager;
 
 class ABrick implements Brick
 {
-
+    public function init(EventManager $event_manager): void
+    {
+        $event_manager->dispatch(new AnEvent(-12));
+    }
 }
